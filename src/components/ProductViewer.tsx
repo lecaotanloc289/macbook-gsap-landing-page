@@ -55,14 +55,19 @@ const ProductViewer = () => {
         camera={{ position: [0, 2, 5], fov: 50, near: 0.1, far: 100 }}
       >
         {/* x, y, z */}
+
         {/* <Box
           position={[0, 0, 0]}
           scale={10 * scale}
           material-color={color}
         ></Box> */}
+
         <StudioLight />
+
         {/* <MacbookModel14 scale={0.06} position={[0, 0, 0]} /> */}
+
         {/* <OrbitControls enableZoom={false} /> */}
+
         <ModelSwitcher
           scale={isMobile ? scale - 0.03 : scale}
           isMobile={isMobile}
