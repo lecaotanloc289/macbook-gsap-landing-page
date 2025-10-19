@@ -4,9 +4,9 @@ import { features, featureSequence } from "../constants";
 import clsx from "clsx";
 import { Suspense, useEffect, useRef } from "react";
 import { Html } from "@react-three/drei";
-import MacbookModel from "./models/Macbook";
+import MacbookModel from "../components/models/Macbook.jsx";
 import { useMediaQuery } from "react-responsive";
-import useMacbookStore from "../store/index";
+import useMacbookStore from "../store/index.js";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
@@ -101,10 +101,7 @@ const Features = () => {
       </Canvas>
       <div className="absolute inset-0">
         {features.map((feature, index) => (
-          <div
-            key={index}
-            className={clsx("box", `box${index + 1}`, feature.styles)}
-          >
+          <div className={clsx("box", `box${index + 1}`, feature.styles)}>
             <img src={feature.icon} alt={feature.highlight} />
             <p>
               <span className="text-white">{feature.highlight}</span>

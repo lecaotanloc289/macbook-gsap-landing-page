@@ -1,34 +1,15 @@
-// src/store/macbook.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-
-export type TextureId = string | null;
-
-export interface MacbookState {
-  color: string;
-  scale: number;
-  texture: TextureId;
-
-  setColor: (color: string) => void;
-  setScale: (scale: number) => void;
-  setTexture: (texture: TextureId) => void;
-
-  reset: () => void;
-}
-
-const DEFAULTS = {
+const useMacbookStore = create((set) => ({
   color: "#2e2c2e",
+  setColor: (color: any) => set({ color }),
   scale: 0.08,
-  texture: "/videos/feature-1.mp4" as const,
-};
+  setScale: (scale: any) => set({ scale }),
 
-const useMacbookStore = create<MacbookState>()((set) => ({
-  ...DEFAULTS,
+  texture: "/videos/feature-1.mp4",
+  setTexture: (texture: any) => set({ texture }),
 
-  setColor: (color) => set({ color }),
-  setScale: (scale) => set({ scale }),
-  setTexture: (texture) => set({ texture }),
-
-  reset: () => set({ ...DEFAULTS }),
+  reset: () =>
+    set({ color: "#2e2c2e", scale: 0.08, texture: "/videos/feature-1.mp4" }),
 }));
-
 export default useMacbookStore;
