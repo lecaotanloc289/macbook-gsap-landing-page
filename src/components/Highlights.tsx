@@ -20,7 +20,7 @@ const Highlights = () => {
   return (
     <section id="highlights">
       <h2>There's never been a better time to upgrade.</h2>
-      <h3>Here's what you get with the new Macbook Pro.</h3>
+      <h3>Here's what you get with the new MacBook Pro.</h3>
       <div className="masonry">
         <div className="left-column">
           <div className="">
@@ -29,7 +29,7 @@ const Highlights = () => {
           </div>
           <div className="">
             <img src="/sun.png" alt="Sun" />
-            <p>A stuning Liquid Retina XDR display.</p>
+            <p>A stunning Liquid Retina XDR display.</p>
           </div>
         </div>
 
@@ -37,7 +37,7 @@ const Highlights = () => {
           <div className="apple-gradient">
             <img src="/ai.png" alt="AI" />
             <p>
-              Built for <br /> <span>Apple Inteligence.</span>
+              Built for <br /> <span>Apple Intelligence.</span>
             </p>
           </div>
           <div className="">
