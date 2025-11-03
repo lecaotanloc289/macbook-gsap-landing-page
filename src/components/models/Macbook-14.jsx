@@ -15,17 +15,17 @@ import useMacbookStore from "../../store";
 import { noChangeParts } from "../../constants";
 import { Color, SRGBColorSpace } from "three";
 
-export default function MacbookModel14(props: any) {
+export default function MacbookModel14(props) {
   const { color } = useMacbookStore();
   const { nodes, materials, scene } = useGLTF(
     "/models/macbook-14-transformed.glb"
   );
   const texture = useTexture("/screen.png");
-  texture.colorSpace = SRGBColorSpace;
-  texture.needsUpdate = true;
+  texture.colorSpace = SRGBColorSpace
+  texture.needsUpdate = true
 
   useEffect(() => {
-    scene.traverse((child: any) => {
+    scene.traverse((child) => {
       if (child.isMesh) {
         if (!noChangeParts.includes(child.name)) {
           child.material.color = new Color(color);
@@ -121,7 +121,10 @@ export default function MacbookModel14(props: any) {
         material={materials.JvMFZolVCdpPqjj}
         rotation={[Math.PI / 2, 0, 0]}
       />
-      <mesh geometry={nodes.Object_123.geometry} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh
+        geometry={nodes.Object_123.geometry}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
         <meshBasicMaterial map={texture} />
       </mesh>
       <mesh
