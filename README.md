@@ -109,7 +109,11 @@ Open [http://localhost:5173](http://localhost:5173) in your browser to view the 
 
 **Deploying**
 
-The site is deployed to Cloudflare Workers (static assets) with the custom domain `macbook.lecaotanloc.dev`, configured in `wrangler.jsonc`. Log in once with `pnpm exec wrangler login`, then:
+The site is deployed to Cloudflare Workers (static assets) with the custom domain `macbook.lecaotanloc.dev`, configured in `wrangler.jsonc`.
+
+Every push to `main` deploys automatically via GitHub Actions (`.github/workflows/deploy.yml`). The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret: a Cloudflare API token created from the "Edit Cloudflare Workers" template, scoped to the account and the `lecaotanloc.dev` zone.
+
+To deploy manually from your machine, log in once with `pnpm exec wrangler login`, then:
 
 ```bash
 pnpm run deploy
