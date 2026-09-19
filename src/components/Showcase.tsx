@@ -25,7 +25,7 @@ const Showcase = () => {
           //   transform: "scale(1.1)",
           scale: 1.13,
         })
-        .to(".content", { opacity: 1, y: 0, ease: "power1.in" });
+        .to("#showcase .content", { opacity: 1, y: 0, ease: "power1.in" });
     }
   }, [isTablet]);
   return (
