@@ -28,6 +28,7 @@
 - [Introduction](#introduction)
 - [Tech Stack](#tech-stack)
 - [Features](#features)
+- [Performance](#performance)
 - [ Quick Start](#-quick-start)
 
 ## <a name="tech-stack">Introduction</a>
@@ -71,6 +72,17 @@ If you're getting started and need assistance or face any bugs. Please contact m
 - **Responsive Design**: Ensure fluid UI and adaptive GSAP animations across all screen sizes.
 
 And many more, including code architecture and reusability.
+
+## <a name="performance">Performance</a>
+
+The page keeps scrolling at 60fps by following a few rules. Keep them when adding sections:
+
+- **Canvases render only on screen.** Each `<Canvas>` sets `frameloop` from `useInView` (`src/hooks/useInView.ts`) and caps `dpr` at `[1, 1.5]`.
+- **Videos play only on screen.** DOM videos use `useVideoInView` (`src/hooks/useVideoInView.ts`). The feature MacBook (`src/components/models/Macbook.tsx`) creates one `VideoTexture` per feature video up front and plays only the active one.
+- **Upload textures once.** Never set `texture.needsUpdate = true` on every render.
+- **Scrub with transforms.** Animate `x`, `y`, `scale` and `opacity`, never `left`, `top`, `width` and similar layout properties.
+- **Import GSAP plugins by path**, e.g. `gsap/ScrollTrigger`, not `gsap/all`.
+- **Images are WebP** in `public/`. Convert new ones with `cwebp -q 85 in.png -o out.webp`.
 
 ## <a name="quick-start"> Quick Start</a>
 Follow these steps to set up the project locally on your machine.
