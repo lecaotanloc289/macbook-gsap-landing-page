@@ -6,7 +6,7 @@ import gsap from "gsap";
 
 const Performance = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
@@ -45,20 +45,45 @@ const Performance = () => {
         },
       });
 
-      // Position Each Performance Image
+      // Position Each Performance Image. Target left/right/bottom percentages are
+      // converted to x/y translations so scrubbing only composites instead of
+      // re-running layout every frame. offset* ignore transforms, so the deltas
+      // stay correct when invalidateOnRefresh recomputes them after a resize.
+      const wrapper = sectionEl.querySelector<HTMLElement>(".wrapper");
+      if (!wrapper) return;
+
       performanceImgPositions.forEach((item) => {
         if (item.id === "p5") return;
 
-        const selector = `.${item.id}`;
-        const vars: Record<string, string> = {};
+        const img = wrapper.querySelector<HTMLElement>(`.${item.id}`);
+        if (!img) return;
 
-        if (typeof item.left === "number") vars.left = `${item.left}%`;
-        if (typeof item.right === "number") vars.right = `${item.right}%`;
-        if (typeof item.bottom === "number") vars.bottom = `${item.bottom}%`;
+        const vars: gsap.TweenVars = {};
+        const { left, right, bottom } = item as {
+          left?: number;
+          right?: number;
+          bottom?: number;
+        };
 
-        if (item.transform) vars.transform = item.transform;
+        if (typeof left === "number") {
+          vars.x = () => (left / 100) * wrapper.clientWidth - img.offsetLeft;
+        } else if (typeof right === "number") {
+          vars.x = () =>
+            wrapper.clientWidth -
+            img.offsetLeft -
+            img.offsetWidth -
+            (right / 100) * wrapper.clientWidth;
+        }
 
-        tl.to(selector, vars, 0);
+        if (typeof bottom === "number") {
+          vars.y = () =>
+            wrapper.clientHeight -
+            img.offsetTop -
+            img.offsetHeight -
+            (bottom / 100) * wrapper.clientHeight;
+        }
+
+        tl.to(img, vars, 0);
       });
     },
     { scope: sectionRef, dependencies: [isMobile] }
