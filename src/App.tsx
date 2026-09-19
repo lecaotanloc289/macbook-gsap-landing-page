@@ -2,7 +2,7 @@ import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import ProductViewer from "./components/ProductViewer";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Showcase from "./components/Showcase";
 import Performance from "./components/Performance";
 import Features from "./components/Features";
@@ -10,6 +10,8 @@ import Highlights from "./components/Highlights";
 import Footer from "./components/Footer";
 
 gsap.registerPlugin(ScrollTrigger);
+// Mobile address-bar show/hide resizes the viewport; skip the costly full refresh.
+ScrollTrigger.config({ ignoreMobileResize: true });
 const App = () => {
   return (
     <main>
