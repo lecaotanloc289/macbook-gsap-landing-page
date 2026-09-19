@@ -81,6 +81,7 @@ The page keeps scrolling at 60fps by following a few rules. Keep them when addin
 - **Videos play only on screen.** DOM videos use `useVideoInView` (`src/hooks/useVideoInView.ts`). The feature MacBook (`src/components/models/Macbook.tsx`) creates one `VideoTexture` per feature video up front and plays only the active one.
 - **Upload textures once.** Never set `texture.needsUpdate = true` on every render.
 - **Scrub with transforms.** Animate `x`, `y`, `scale` and `opacity`, never `left`, `top`, `width` and similar layout properties.
+- **Reserve media size above pinned sections.** ScrollTrigger measures pin spacers once, so a video whose height changes after load (e.g. `#showcase video`, fixed with `aspect-[16/10]`) makes the next section scroll over the pinned one.
 - **Import GSAP plugins by path**, e.g. `gsap/ScrollTrigger`, not `gsap/all`.
 - **Images are WebP** in `public/`. Convert new ones with `cwebp -q 85 in.png -o out.webp`.
 

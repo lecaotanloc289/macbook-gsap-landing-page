@@ -190,8 +190,11 @@ body {
     .media {
       @apply relative lg:overflow-hidden;
 
+      /* Reserve game.mp4's 16:10 box before metadata loads. Otherwise the
+         pin-spacer is measured against a 150px placeholder and Performance
+         scrolls over the Showcase text once the video grows. */
       video {
-        @apply w-full object-cover object-center;
+        @apply w-full aspect-[16/10] object-cover object-center;
       }
 
       .mask {
