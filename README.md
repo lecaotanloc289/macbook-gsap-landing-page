@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-    <a href="https://macbook-gsap-landing-page-seven.vercel.app" target="_blank">
+    <a href="https://macbook.lecaotanloc.dev" target="_blank">
       <img src="public/readme.png" alt="Project Banner">
     </a>
   <br />
@@ -11,7 +11,7 @@
 <img src="https://img.shields.io/badge/-Three.js-27136A?style=for-the-badge&logo=three.js&logoColor=white" />
 <img src="https://img.shields.io/badge/-Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
 <img src="https://img.shields.io/badge/-CodeRabbit-FF6C37?style=for-the-badge&logo=visual-studio-code&logoColor=white" />
-<img src="https://deploy-badge.vercel.app/vercel/reactions-demo?style=for-the-badge" alt="Vercel Deploy"></img>
+<img src="https://img.shields.io/badge/-Cloudflare_Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" />
 
 
   </div>
@@ -42,7 +42,7 @@ If you're getting started and need assistance or face any bugs. Please contact m
 
 - **[GSAP](https://gsap.com/)** is a powerful JavaScript animation library used in this project to create dynamic, scroll-driven visuals. Features include SplitText animations for bold text reveals, ScrollTrigger for timeline control, parallax scrolling, pinned sections, scroll-synced video playback, seamless multi-section timelines, image masking effects, and a fully custom animated carousel.
 
-- **[Vercel](https://vercel.com)** is a powerful cloud platform for hosting web applications and static sites. It provides automatic builds, continuous deployment from Git repositories, and global CDN delivery. This project is hosted on Vercel to ensure high performance, reliability, and zero-downtime updates.  
+- **[Cloudflare Workers](https://developers.cloudflare.com/workers/static-assets/)** serves the built site as static assets on Cloudflare's global network. This project is live at [macbook.lecaotanloc.dev](https://macbook.lecaotanloc.dev).
 
 - **[React](https://react.dev/)** is a declarative JavaScript library for building interactive UIs. It provides the component structure for modular development, allowing smooth integration of GSAP animations, reusable logic for scroll behavior, and support for responsive layout and state-driven UI features like carousels and video sections.
 
@@ -106,3 +106,11 @@ pnpm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
+
+**Deploying**
+
+The site is deployed to Cloudflare Workers (static assets) with the custom domain `macbook.lecaotanloc.dev`, configured in `wrangler.jsonc`. Log in once with `pnpm exec wrangler login`, then:
+
+```bash
+pnpm run deploy
+```

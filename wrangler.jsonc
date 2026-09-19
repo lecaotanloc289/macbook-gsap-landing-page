@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "macbook-gsap-landing-page",
+  "account_id": "9e9fdaef388372621ca921368ce4eb10",
+  "compatibility_date": "2026-09-20",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    { "pattern": "macbook.lecaotanloc.dev", "custom_domain": true }
+  ],
+  "workers_dev": false
+}
