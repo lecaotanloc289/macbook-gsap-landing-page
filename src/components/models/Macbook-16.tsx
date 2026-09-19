@@ -15,13 +15,16 @@ import { Color, SRGBColorSpace } from "three";
 import { useGLTF, useTexture } from "@react-three/drei";
 
 export default function MacbookModel16(props: any) {
-  const { color } = useMacbookStore();
+  const color = useMacbookStore((s) => s.color);
   const { nodes, materials, scene } = useGLTF(
     "/models/macbook-16-transformed.glb"
   );
   const texture = useTexture("/screen.webp");
-  texture.colorSpace = SRGBColorSpace;
-  texture.needsUpdate = true;
+  // Set once; flagging needsUpdate on every render re-uploads the texture to the GPU.
+  if (texture.colorSpace !== SRGBColorSpace) {
+    texture.colorSpace = SRGBColorSpace;
+    texture.needsUpdate = true;
+  }
 
   useEffect(() => {
     scene.traverse((child) => {

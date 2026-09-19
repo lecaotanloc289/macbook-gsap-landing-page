@@ -4,12 +4,19 @@ import { Canvas } from "@react-three/fiber";
 import StudioLight from "./three/StudioLight";
 import ModelSwitcher from "./three/ModelSwitcher";
 import { useMediaQuery } from "react-responsive";
+import { useRef } from "react";
+import useInView from "../hooks/useInView";
 
 const ProductViewer = () => {
-  const { color, scale, setColor, setScale } = useMacbookStore();
+  const color = useMacbookStore((s) => s.color);
+  const scale = useMacbookStore((s) => s.scale);
+  const setColor = useMacbookStore((s) => s.setColor);
+  const setScale = useMacbookStore((s) => s.setScale);
   const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef);
   return (
-    <section id="product-viewer">
+    <section id="product-viewer" ref={sectionRef}>
       <h2>Take a closer look.</h2>
       <div className="controls">
         <p className="info">
@@ -52,6 +59,9 @@ const ProductViewer = () => {
       </div>
       <Canvas
         id="canvas"
+        // Cap pixel ratio (retina = 2-3x fill cost) and stop rendering offscreen.
+        dpr={[1, 1.5]}
+        frameloop={inView ? "always" : "never"}
         camera={{ position: [0, 2, 5], fov: 50, near: 0.1, far: 100 }}
       >
         {/* x, y, z */}

@@ -8,26 +8,66 @@ Source: https://sketchfab.com/3d-models/macbook-pro-m3-16-inch-2024-8e34fc2b3031
 Title: macbook pro M3 16 inch 2024
 */
 
-import React, { useEffect } from 'react'
-import { useGLTF, useTexture, useVideoTexture } from '@react-three/drei'
-import { Color, SRGBColorSpace } from 'three'
+import { useEffect, useMemo } from 'react'
+import { useGLTF } from '@react-three/drei'
+import { SRGBColorSpace, VideoTexture } from 'three'
 import useMacbookStore from '../../store'
-import { noChangeParts } from '../../constants'
-export default function MacbookModel(props) {
-  const { color, texture } = useMacbookStore()
+import { featureSequence, noChangeParts } from '../../constants'
+
+// `playing` lets the parent stop video decoding while the section is offscreen.
+export default function MacbookModel({ playing = true, ...props }) {
+  const color = useMacbookStore((s) => s.color)
+  const texture = useMacbookStore((s) => s.texture)
   const { nodes, materials, scene } = useGLTF('/models/macbook-transformed.glb')
 
-  const screen = useVideoTexture(texture)
+  // One video + texture per feature, created once. Switching features only swaps
+  // the material map instead of suspending to load a new video every time.
+  const screens = useMemo(
+    () =>
+      new Map(
+        featureSequence.map(({ videoPath }) => {
+          const video = Object.assign(document.createElement('video'), {
+            src: videoPath,
+            muted: true,
+            loop: true,
+            playsInline: true,
+            preload: 'auto',
+            crossOrigin: 'anonymous',
+          })
+          const videoTexture = new VideoTexture(video)
+          videoTexture.colorSpace = SRGBColorSpace
+          return [videoPath, videoTexture]
+        })
+      ),
+    []
+  )
+  const screen = screens.get(texture ?? "") ?? screens.get(featureSequence[0].videoPath)
 
-   useEffect(() => {
-        scene.traverse((child) => {
-            if (child.isMesh) {
-                if (!noChangeParts.includes(child.name)) {
-                    child.material.color = new Color(color);
-                }
-            }
-        });
-    }, [color, scene]);
+  // Only the visible feature video decodes; the others stay paused.
+  useEffect(() => {
+    screens.forEach((videoTexture) => {
+      const video = videoTexture.image
+      if (playing && videoTexture === screen) video.play().catch(() => {})
+      else video.pause()
+    })
+  }, [screens, screen, playing])
+
+  useEffect(
+    () => () =>
+      screens.forEach((videoTexture) => {
+        videoTexture.image.pause()
+        videoTexture.dispose()
+      }),
+    [screens]
+  )
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if (child.isMesh && !noChangeParts.includes(child.name)) {
+        child.material.color?.set(color)
+      }
+    })
+  }, [color, scene])
   
   return (
     <group {...props} dispose={null}>

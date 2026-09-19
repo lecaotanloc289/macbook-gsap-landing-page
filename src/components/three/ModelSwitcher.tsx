@@ -14,11 +14,20 @@ const OFFSET_DISTANCE = 5;
 const fadeMeshes = (group: any, opacity: any) => {
   if (!group) return;
 
+  // A faded-out model is still drawn (and sorted as transparent) unless hidden.
+  if (opacity > 0) group.visible = true;
+
   group.traverse((child: any) => {
     if (child.isMesh) {
       child.material.transparent = true;
       gsap.to(child.material, { opacity, duration: ANIMATION_DURATION });
     }
+  });
+
+  // Kill a pending hide so fast 14"/16" toggling cannot hide the model fading in.
+  group.userData.visibilityCall?.kill();
+  group.userData.visibilityCall = gsap.delayedCall(ANIMATION_DURATION, () => {
+    group.visible = opacity > 0;
   });
 };
 

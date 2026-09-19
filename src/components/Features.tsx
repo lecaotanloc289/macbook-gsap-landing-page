@@ -1,32 +1,20 @@
 import { Canvas } from "@react-three/fiber";
 import StudioLight from "./three/StudioLight";
-import { features, featureSequence } from "../constants";
+import { features } from "../constants";
 import clsx from "clsx";
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useRef } from "react";
 import { Html } from "@react-three/drei";
 import MacbookModel from "./models/Macbook";
 import { useMediaQuery } from "react-responsive";
 import useMacbookStore from "../store/index";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import useInView from "../hooks/useInView";
 
-const ModelScroll = () => {
+const ModelScroll = ({ playing }: { playing: boolean }) => {
   const groupRef = useRef(null);
   const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
-  const { setTexture } = useMacbookStore();
-
-  useEffect(() => {
-    featureSequence.forEach((feature) => {
-      const v = document.createElement("video");
-      Object.assign(v, {
-        src: feature.videoPath,
-        muted: true,
-        playInline: true,
-        preload: "auto",
-        crossOrigin: "anonymous",
-      });
-    });
-  }, []);
+  const setTexture = useMacbookStore((s) => s.setTexture);
 
   useGSAP(() => {
     const modelTimeline = gsap.timeline({
@@ -83,21 +71,32 @@ const ModelScroll = () => {
           </Html>
         }
       >
-        <MacbookModel scale={isMobile ? 0.05 : 0.08} position={[0, -1, 0]} />
+        <MacbookModel
+          playing={playing}
+          scale={isMobile ? 0.05 : 0.08} position={[0, -1, 0]} />
       </Suspense>
     </group>
   );
 };
 
 const Features = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef);
+
   return (
-    <section id="features">
+    <section id="features" ref={sectionRef}>
       <h2>See it all in a new light.</h2>
 
-      <Canvas id="f-canvas" camera={{}}>
+      <Canvas
+        id="f-canvas"
+        camera={{}}
+        // Cap pixel ratio (retina = 2-3x fill cost) and stop rendering offscreen.
+        dpr={[1, 1.5]}
+        frameloop={inView ? "always" : "never"}
+      >
         <StudioLight />
         <ambientLight intensity={0.5} />
-        <ModelScroll />
+        <ModelScroll playing={inView} />
       </Canvas>
       <div className="absolute inset-0">
         {features.map((feature, index) => (
