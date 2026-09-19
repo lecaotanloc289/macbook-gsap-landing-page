@@ -1,9 +1,14 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useMediaQuery } from "react-responsive";
+import { useRef } from "react";
+import useVideoInView from "../hooks/useVideoInView";
 
 const Showcase = () => {
   const isTablet = useMediaQuery({ query: "(max-width: 1024px)" });
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useVideoInView(videoRef);
+
   useGSAP(() => {
     if (!isTablet) {
       const timeline = gsap.timeline({
@@ -26,7 +31,9 @@ const Showcase = () => {
   return (
     <section id="showcase">
       <div className="media">
-        <video src="/videos/game.mp4" loop muted autoPlay playsInline />
+        <video
+          ref={videoRef}
+          src="/videos/game.mp4" loop muted autoPlay playsInline />
         <div className="mask">
           <img src="/mask-logo.svg" alt="Mask Image" className="" />
         </div>

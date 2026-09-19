@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
+import useVideoInView from "../hooks/useVideoInView";
 
 const Hero = () => {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useVideoInView(videoRef);
 
   useEffect(() => {
     if (videoRef.current) videoRef.current.playbackRate = 2;
